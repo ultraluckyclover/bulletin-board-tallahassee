@@ -1,11 +1,14 @@
 
 import './App.css';
+import  Map  from './components/Map/Map'
+import {useState} from 'react';
+
+
 
 function App() {
+  
   return (
-    <div className="App">
-      <p>App.js</p>
-    </div>
+    <Map/> 
   );
 }
 
