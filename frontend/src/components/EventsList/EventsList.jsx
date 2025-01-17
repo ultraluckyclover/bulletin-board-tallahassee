@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { EventCard } from '../EventCard/EventCard'
+import supabase from '../../supabaseClient';
 
 
 const events = [
@@ -62,9 +63,29 @@ const events = [
   ]
 //   absolute z-30
 export const EventsList = () => {
+
+    const [events, setEvents] = useState([]);
+
+    async function getEvents() {
+        const { data, error } = await supabase.from('events').select();
+        if (error) {
+            console.error("Error fetching events data:", error);
+        } else {
+            setEvents(data);
+            console.log("Successfully fetched events data.");
+        }
+    }
+
+    useEffect(() => {
+        getEvents();
+    }, [])
+    console.log("Events:", events);
+
+
+
   return (
     <>
-        <div class = ' bg-white flex flex-col border-4 border-black p-4 h-screen overflow-scroll w-1/3'>
+        <div className = ' bg-[#fffcf5] flex flex-col border-4 border-black p-4 h-screen overflow-scroll w-1/3'>
             {events.map( (event, i) => {
             return <EventCard key={i} event = {event} />;
             })}
