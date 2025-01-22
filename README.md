@@ -76,8 +76,8 @@ CREATE TABLE events (
 
 To configure this for your city:
 
-1. Navigate to tfrontend/src/components/Map/Map.jsx
-2. Update the coordinates array:
+1. Navigate to frontend/src/components/Map/Map.jsx
+2. Update the coordinates array located:
 
 <sub>javascript</sub>
 ```
