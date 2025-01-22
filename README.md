@@ -10,8 +10,9 @@ A dynamic bulletin board application for Tallahassee where users can view local 
 
 ### Prerequisites
 * npm (10.9.x recommended)
+* Supabase account and project
 
-## Getting Started
+## Installation
 
 1. Clone the project
 
@@ -30,10 +31,57 @@ REACT_APP_SUPABASE_URL = <your-supabase-url>
 REACT_APP_SUPABASE_KEY = <your-supabase-anon-key>
 ```
 
-5. Run the development server.
+## Database Schema
+
+Run the following scripts in the Supabase SQL Editor to create tables.
+
+### Locations table
+
+
+```
+<sub>sql</sub>
+CREATE TABLE locations (
+    id INTEGER PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    lat DECIMAL(8,5) NOT NULL,
+    long DECIMAL(8,5) NOT NULL,
+    street_address TEXT,
+    location_name TEXT NOT NULL,
+    
+    -- Add constraints for valid latitude/longitude
+    CONSTRAINT valid_latitude CHECK (lat BETWEEN -90 AND 90),
+    CONSTRAINT valid_longitude CHECK (long BETWEEN -180 AND 180)
+);
+```
+
+### Events table
+
+```
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    event_name TEXT NOT NULL,
+    start_time TIMESTAMPTZ NOT NULL,
+    type TEXT[], -- Using PostgreSQL array type for event types
+    location_id INTEGER REFERENCES locations(id),
+    end_time TIMESTAMPTZ
+);
+```
+## Map Integration
+
+To configure this for your city, 
+
+1. Navigate to the Map.jsx located in frontend > src > components > Map
+2. Change the values in the coords array located above the function Map declaration.
+
+## Usage
+
+1. Run the development server.
 ```
 npm run start
 ```
+
+2. Access the application at http://localhost:3000.
 
 
 
