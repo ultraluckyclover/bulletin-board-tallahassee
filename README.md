@@ -37,9 +37,9 @@ Run the following scripts in the Supabase SQL Editor to create tables.
 
 ### Locations table
 
-
-```
 <sub>sql</sub>
+```
+
 CREATE TABLE locations (
     id INTEGER PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT now(),
@@ -56,6 +56,7 @@ CREATE TABLE locations (
 
 ### Events table
 
+<sub>sql</sub>
 ```
 CREATE TABLE events (
     id INTEGER PRIMARY KEY,
@@ -69,7 +70,7 @@ CREATE TABLE events (
 ```
 ## Map Integration
 
-To configure this for your city, 
+To configure this for your city
 
 1. Navigate to the Map.jsx located in frontend > src > components > Map
 2. Change the values in the coords array located above the function Map declaration.
