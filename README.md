@@ -19,7 +19,7 @@ A dynamic bulletin board application for Tallahassee where users can view local 
 <sub>bash</sub>
 
 ```
-https://github.com/ultraluckyclover/bulletin-board-tallahassee.git
+git clone https://github.com/ultraluckyclover/bulletin-board-tallahassee.git
 ```
 2. Navigate into the frontend directory and install packages.
 
