@@ -2,28 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Map.css';
 import supabase  from '../../supabaseClient';
+import { formatTimestamp } from '../../utils';
+
+const coords = [30.455000, -84.253334] // Default: Tallahassee
 
 function Map () {
 
-    // Fetch locations from database
+    // Fetch locations from supabase with SQL function 
 
-    const [locations, setLocations] = useState([]);
+    const [ locations, setLocations ] = useState([])
 
     async function getLocations() {
-        const { data, error }   = await supabase.from('locations').select();
+        const { data, error } =  await supabase.rpc('get_location_with_events_list');
         if (error) {
-            console.error("Error fetching data:", error);
-        } else{
+            console.error("Error retrieving locations with events data:", error);
+        } else {
             setLocations(data);
+            console.log('Successfully retrieved locations with events data');
         }
     }
 
-    useEffect(() => {
+    useEffect( () => {
         getLocations();
-    }, [])
+    },[])
+    console.log("Locations!!: ", locations)
+
+    // CHANGE THESE FOR YOUR CITY
+    
 
     return (
-        <MapContainer center={[30.455000, -84.253334]} zoom={13} scrollWheelZoom={false}>
+        <MapContainer center={coords} zoom={13} scrollWheelZoom={false}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -33,7 +41,21 @@ function Map () {
 
             {locations.map((location) => (
                     <Marker key={location.id} position={[location.lat, location.long]}>
-                        <Popup>{location.name}</Popup>
+                        <Popup>
+                            <h1 className = 'font-bold text-lg'>{location.location_name}</h1>
+
+                            {location.events[0]?.start_time ? (
+                                <p>
+                                    Next event: <strong>{location.events[0].event_name}</strong>, {formatTimestamp(location.events[0].start_time)}         
+                                </p>
+                            ) : null}
+
+                            {
+                                location.events[1] ? (
+                                    <a>See all events</a>
+                                ) : null
+                            }
+                        </Popup>
                     </Marker>
             ))}
 

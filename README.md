@@ -16,10 +16,14 @@ A dynamic bulletin board application for Tallahassee where users can view local 
 
 1. Clone the project
 
+<sub>bash</sub>
+
 ```
 https://github.com/ultraluckyclover/bulletin-board-tallahassee.git
 ```
 2. Navigate into the frontend directory and install packages.
+
+<sub>bash</sub>
 ```
 cd frontend
 npm install
@@ -70,10 +74,15 @@ CREATE TABLE events (
 ```
 ## Map Integration
 
-To configure this for your city
+To configure this for your city:
 
 1. Navigate to the Map.jsx located in frontend > src > components > Map
 2. Change the values in the coords array located above the function Map declaration.
+
+<sub>javascript</sub>
+```
+const coords = [30.455000, -84.253334] // Default: Tallahassee
+```
 
 ## Usage
 
