@@ -43,7 +43,6 @@ Run the following scripts in the Supabase SQL Editor to create tables.
 
 <sub>sql</sub>
 ```
-
 CREATE TABLE locations (
     id INTEGER PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT now(),
