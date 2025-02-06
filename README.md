@@ -14,7 +14,7 @@ A dynamic bulletin board application for Tallahassee where users can view local 
 
 ## Installation
 
-1. Clone the project
+1. Clone the projectxelatex --version
 
 <sub>bash</sub>
 
