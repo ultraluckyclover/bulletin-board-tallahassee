@@ -7,18 +7,31 @@ import { BigEventCard } from './components/EventCards/BigEventCard';
 import { useState, useReact, useEffect } from 'react';
 import supabase from './supabaseClient';
 import { Filter } from './components/FilterBar/FilterBar';
+import { EventsContext, EventsProvider, useEvents } from './scripts/Context';
+
+
 
 const App = () => {
-  const [filter,setFilter] = useState(null);
+  
+
 
   return (
     <div className = 'flex justify-between relative'>
+
+      <EventsProvider>
+
+        <EventsList/>
+        <Map />
+        <Filter/>
+      </EventsProvider>
       
-      <EventsList filter ={filter} setFilter = {setFilter}/>
-      <Filter/>
+      
+
+
+      
       {/* <BigEventCard/> */}
 
-      <Map filter ={filter} setFilter = {setFilter}/>
+      
     </div>
   );
 }

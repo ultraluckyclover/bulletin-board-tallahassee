@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import './Map.css';
-import supabase  from '../../supabaseClient';
-import { formatTimestamp } from '../../scripts/utils';
+
+import { Icon } from 'leaflet';
+import { useEvents } from '../../scripts/Context';
 import { handleLocationClick } from '../../scripts/eventHandlers';
-import {Icon} from 'leaflet';
 
 const customIcon = new Icon ({
     iconUrl : 'https://img.icons8.com/?size=100&id=120665&format=png&color=000000',
@@ -12,35 +12,23 @@ const customIcon = new Icon ({
 });
 
 
-const Map = ({filter, setFilter}) => {
+const Map = () => {
 
-    // Fetch locations from supabase with SQL function 
+    /**
+     * React component for the main map, 
+     * displays a marker for each location
+     * 
+     * Coordinates are configured for Tallahassee
+     * 
+     */
 
-    const [ locations, setLocations ] = useState([])
 
-    async function getLocations() {
-        const { data, error } =  await supabase.rpc('get_location_with_events_list');
-        if (error) {
-            console.error("Error retrieving locations with events data:", error);
-        } else {
-            setLocations(data);
-            console.log('Successfully retrieved locations with events data');
-        }
-    }
+    const { events, setLocationId } = useEvents();
 
-    useEffect( () => {
-        getLocations();
-    },[])
-
-    useEffect( () => {
-        console.log("Current filter in Map.jsx:", filter)
-    },[filter])
-    // console.log("Locations!!: ", locations)
-
+    
     // CHANGE THESE FOR YOUR CITY
     const coords = [30.455000, -84.253334] // Default: Tallahassee
     
-
     return (
         <MapContainer center={coords} zoom={13} scrollWheelZoom={false}>
             <TileLayer
@@ -49,49 +37,28 @@ const Map = ({filter, setFilter}) => {
                 detectRetina = {true}
             />
 
-            {/* Markers for each location */}
+            {/* Markers for each event */}
 
-            {locations.map((location) => (                    
-                
-                
-                    <Marker key={location.location_id} 
-                            position={[location.lat, location.long]}
+            {events.map((event) => (                    
+                    <Marker key={event.event_id} 
+                            position={[event.lat, event.long]}
                             icon ={customIcon}>
-                        {console.log(location)}
+                        {console.log(event)}
                         <Popup>
                             <a href = '#'
                             onClick={(e) => {
                                 e.preventDefault();
-                                console.log("TYPE LOCATION ID", typeof location.location_id);
-                                handleLocationClick(setFilter, location.location_id)
+                                console.log("TYPE event ID", typeof event.location_id);
+                                handleLocationClick(setLocationId, event.location_id)
                             }}
                             >
-                                <h1 className = 'font-bold text-sm'>{location.location_name}</h1>
+                                <h1 className = 'font-bold text-sm'>{event.location_name}</h1>
                             </a>
                         </Popup>
                     </Marker>
             ))}
-
         </MapContainer>
     )    
 }
 
 export default Map
-
-
-{/* {location.events[0]?.start_time ? (
-                                <p>
-                                    Next event: <strong>{location.events[0].event_name}</strong>, {formatTimestamp(location.events[0].start_time)}         
-                                </p>
-                            ) : null}
-
-                            {
-                                location.events[1] ? (
-                                    <a href = '#'
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        console.log("TYPE LOCATION ID", typeof location.location_id);
-                                        handleLocationClick(setFilter, location.location_id)
-                                    }}>See all events</a>
-                                ) : null
-                            } */}

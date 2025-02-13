@@ -32,3 +32,5 @@ src/setUpTests.js
 
 public/robots.txt
 public/manifest.json
+
+src/components/EventCards/BigEventCard.jsx
